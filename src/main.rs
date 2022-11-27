@@ -12,7 +12,7 @@ struct Query;
 
 #[Object]
 impl Query {
-    async fn name(&self) -> &str {
+    async fn name(&self) -> &'static str {
         "Zulhilmi"
     }
 
@@ -43,15 +43,15 @@ async fn main() -> std::io::Result<()> {
         // .data()
         .finish();
 
-        println!("GraphiQL IDE: http://localhost:8000");
+    println!("GraphiQL IDE: http://localhost:8000");
 
-        HttpServer::new(move || {
-            App::new()
-                .app_data(Data::new(schema.clone()))
-                .service(web::resource("/").guard(guard::Post()).to(index))
-                .service(web::resource("/").guard(guard::Get()).to(index_graphiql))
-        })
-        .bind("127.0.0.1:8000")?
-        .run()
-        .await
+    HttpServer::new(move || {
+        App::new()
+            .app_data(Data::new(schema.clone()))
+            .service(web::resource("/").guard(guard::Post()).to(index))
+            .service(web::resource("/").guard(guard::Get()).to(index_graphiql))
+    })
+    .bind("127.0.0.1:8000")?
+    .run()
+    .await
 }
