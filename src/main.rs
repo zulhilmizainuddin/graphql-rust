@@ -1,25 +1,10 @@
+mod schema;
+
 use actix_web::{guard, web, web::Data, App, HttpResponse, HttpServer, Result};
-use async_graphql::{http::GraphiQLSource, EmptyMutation, EmptySubscription, Schema, Object, SimpleObject};
+use async_graphql::{http::GraphiQLSource, EmptyMutation, EmptySubscription, Schema};
 use async_graphql_actix_web::{GraphQLRequest, GraphQLResponse};
 
-#[derive(SimpleObject)]
-struct Book {
-    title: &'static str,
-    author: &'static str,
-}
-
-struct Query;
-
-#[Object]
-impl Query {
-    async fn name(&self) -> &'static str {
-        "Zulhilmi"
-    }
-
-    async fn book(&self) -> Book {
-        Book { title: "Lord of the Rings", author: "Tolkien" }
-    }
-}
+use schema::query::Query;
 
 type MainSchema = Schema<Query, EmptyMutation, EmptySubscription>;
 
